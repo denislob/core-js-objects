@@ -57,8 +57,10 @@ function mergeObjects(objects) {
  *    removeProperties({name: 'John', age: 30, city: 'New York'}, ['age']) => {name: 'John', city: 'New York'}
  *
  */
-function removeProperties(/* obj, keys */) {
-  throw new Error('Not implemented');
+function removeProperties(obj, keys) {
+  const copyObj = obj;
+  keys.forEach((key) => delete copyObj[key]);
+  return copyObj;
 }
 
 /**
@@ -73,8 +75,9 @@ function removeProperties(/* obj, keys */) {
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 2}) => true
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 3}) => false
  */
-function compareObjects(/* obj1, obj2 */) {
-  throw new Error('Not implemented');
+function compareObjects(obj1, obj2) {
+  const result = JSON.stringify(obj1) === JSON.stringify(obj2);
+  return result;
 }
 
 /**
@@ -88,8 +91,9 @@ function compareObjects(/* obj1, obj2 */) {
  *    isEmptyObject({}) => true
  *    isEmptyObject({a: 1}) => false
  */
-function isEmptyObject(/* obj */) {
-  throw new Error('Not implemented');
+function isEmptyObject(obj) {
+  const result = Object.keys(obj).length === 0;
+  return result;
 }
 
 /**
@@ -108,8 +112,8 @@ function isEmptyObject(/* obj */) {
  *    immutableObj.newProp = 'new';
  *    console.log(immutableObj) => {a: 1, b: 2}
  */
-function makeImmutable(/* obj */) {
-  throw new Error('Not implemented');
+function makeImmutable(obj) {
+  return Object.freeze(obj);
 }
 
 /**
@@ -122,8 +126,20 @@ function makeImmutable(/* obj */) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+function makeWord(lettersObject) {
+  const indicesArr = Object.values(lettersObject).flat();
+  if (indicesArr.length === 0) return '';
+
+  const mxIndex = Math.max(...indicesArr);
+  const result = new Array(mxIndex + 1).fill('');
+
+  Object.entries(lettersObject).forEach(([letter, indices]) => {
+    indices.forEach((index) => {
+      result[index] = letter;
+    });
+  });
+
+  return result.join('');
 }
 
 /**
