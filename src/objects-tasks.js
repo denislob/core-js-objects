@@ -151,8 +151,39 @@ function makeWord(lettersObject) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  let billTwentyFive = 0;
+  let billFifty = 0;
+
+  return queue.every((banknote) => {
+    if (banknote === 25) {
+      billTwentyFive += 1;
+      return true;
+    }
+
+    if (banknote === 50) {
+      if (billTwentyFive === 0) return false;
+      billTwentyFive -= 1;
+      billFifty += 1;
+      return true;
+    }
+
+    if (banknote === 100) {
+      if (billFifty > 0 && billTwentyFive > 0) {
+        billFifty -= 1;
+        billTwentyFive -= 1;
+        return true;
+      }
+
+      if (billTwentyFive >= 3) {
+        billTwentyFive -= 3;
+        return true;
+      }
+      return false;
+    }
+
+    return false;
+  });
 }
 
 /**
@@ -168,9 +199,14 @@ function sellTickets(/* queue */) {
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
 }
+
+Rectangle.prototype.getArea = function getArea() {
+  return this.width * this.height;
+};
 
 /**
  * Returns the JSON representation of specified object
@@ -182,8 +218,8 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { height: 10, width: 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
 
 /**
@@ -197,8 +233,10 @@ function getJSON(/* obj */) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  const object = Object.create(proto);
+  const info = JSON.parse(json);
+  return Object.assign(object, info);
 }
 
 /**
